@@ -62,6 +62,7 @@
     <Compile Include="DeviceFactory.cs" />
     <Compile Include="EncoderController.cs" />
     <Compile Include="GoPiGo.cs" />
+    <Compile Include="IO\Raspberry.IO.InterIntegratedCircuit\Exceptions\I2CNotAcknowledgedException.cs" />
     <Compile Include="IO\Raspberry.IO.InterIntegratedCircuit\I2cAction.cs" />
     <Compile Include="IO\Raspberry.IO.InterIntegratedCircuit\I2cDeviceConnection.cs" />
     <Compile Include="IO\Raspberry.IO.InterIntegratedCircuit\I2cDriver.cs" />

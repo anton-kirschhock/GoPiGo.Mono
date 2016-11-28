@@ -18,6 +18,16 @@ namespace RunMotor
             var factory = DeviceFactory.Factory;
             using (var gopigo = factory.BuildGoPiGo())
             {
+                var led1 = factory.BuildLed(Pin.LedLeft);
+                var led2 = factory.BuildLed(Pin.LedRight);
+                led1.ChangeState(GoPiGo.Sensors.SensorStatus.On);
+                Thread.Sleep(20);
+                led2.ChangeState(GoPiGo.Sensors.SensorStatus.On);
+                Thread.Sleep(1500);
+                led1.ChangeState(GoPiGo.Sensors.SensorStatus.Off);
+                Thread.Sleep(20);
+                led2.ChangeState(GoPiGo.Sensors.SensorStatus.Off);
+                
                 DateTime dtStart = DateTime.Now;
                 var ultrasonic = factory.BuildUltraSonicSensor(Pin.Analog1);
                 gopigo.MotorController().EnableServo();
@@ -42,9 +52,11 @@ namespace RunMotor
                     
                     while (d < 30)
                     {
+                        led1.ChangeState(GoPiGo.Sensors.SensorStatus.On);
                         gopigo.MotorController().RotateLeft();
                         Thread.Sleep(500);
                         gopigo.MotorController().Stop();
+                        led1.ChangeState(GoPiGo.Sensors.SensorStatus.Off);
                         Thread.Sleep(500);
                         d = ultrasonic.MeasureInCentimeters();
                         Thread.Sleep(10);

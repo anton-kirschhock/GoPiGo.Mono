@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace GoPiGo.Sensors
@@ -24,10 +25,11 @@ namespace GoPiGo.Sensors
         {
             var buffer = new[] { CommandAddress, (byte)_pin, Constants.Unused, Constants.Unused };
             _device.I2CController.Write(buffer);
-            Task.Delay(85);
+            Thread.Sleep(100);
             try
             {
                 var b1 = _device.I2CController.ReadByte();
+                Thread.Sleep(5);
                 var b2 = _device.I2CController.ReadByte();
                 return b1 * 256 + b2;
             }

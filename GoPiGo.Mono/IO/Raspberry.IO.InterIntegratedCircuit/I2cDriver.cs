@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 using Raspberry.IO.GeneralPurpose;
 using Raspberry.Timers;
+using GoPiGo.Mono.IO.Raspberry.IO.InterIntegratedCircuit.Exceptions;
 
 #endregion
 
@@ -233,7 +234,7 @@ namespace Raspberry.IO.InterIntegratedCircuit
             }
 
             if ((SafeReadUInt32(status) & Interop.BCM2835_BSC_S_ERR) != 0) // Received a NACK
-                throw new InvalidOperationException("Read operation failed with BCM2835_I2C_REASON_ERROR_NACK status");
+                throw new I2CNotAcknowledgedException();
             if ((SafeReadUInt32(status) & Interop.BCM2835_BSC_S_CLKT) != 0) // Received Clock Stretch Timeout
                 throw new InvalidOperationException("Read operation failed with BCM2835_I2C_REASON_ERROR_CLKT status");
             if (remaining != 0) // Not all data is sent

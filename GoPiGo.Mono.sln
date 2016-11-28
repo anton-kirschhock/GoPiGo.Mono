@@ -9,6 +9,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{821B1D2C-4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RunMotor", "RunMotor\RunMotor.csproj", "{DA69DF22-B4B1-4195-8F28-19BD49679F59}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wiki", "wiki", "{47047A62-946D-4F90-810D-2F31917708FF}"
+	ProjectSection(SolutionItems) = preProject
+		wiki\Timing.md = wiki\Timing.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

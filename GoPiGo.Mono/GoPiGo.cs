@@ -37,6 +37,18 @@ namespace GoPiGo
             _encoderController = new EncoderController(this);
         }
 
+        internal bool WriteToI2C(byte[] block){
+            try
+            {
+                I2CController.Write(block);
+                Thread.Sleep(5);
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
         public IMotorController MotorController()
         {
             return _motorController;
@@ -51,9 +63,7 @@ namespace GoPiGo
         public string GetFirmwareVersion()
         {
             var buffer = new[] { (byte)Commands.Version, Constants.Unused, Constants.Unused, Constants.Unused };
-
-            I2CController.Write(buffer);
-            Thread.Sleep(5);
+            WriteToI2C(buffer);
             var firmware = I2CController.ReadByte();
             return $"{firmware}";
         }
@@ -61,8 +71,7 @@ namespace GoPiGo
         public byte DigitalRead(Pin pin)
         {
             var buffer = new[] { (byte)Commands.DigitalRead, (byte)pin, Constants.Unused, Constants.Unused };
-            var readBuffer = new byte[1];
-            I2CController.Write(buffer);
+            WriteToI2C(buffer);
             Thread.Sleep(100);
             var data = I2CController.ReadByte();
             return data;
@@ -71,15 +80,15 @@ namespace GoPiGo
         public void DigitalWrite(Pin pin, byte value)
         {
             var buffer = new[] { (byte)Commands.DigitalWrite, (byte)pin, value, Constants.Unused };
-            I2CController.Write(buffer);
+            WriteToI2C(buffer);
 
         }
 
         public int AnalogRead(Pin pin)
         {
             var buffer = new[]
-            {(byte) Commands.DigitalRead, (byte) Commands.AnalogRead, (byte) pin, Constants.Unused, Constants.Unused};
-            I2CController.Write(buffer);
+            {(byte) Commands.AnalogRead, (byte) pin, Constants.Unused, Constants.Unused};
+            WriteToI2C(buffer);
             Thread.Sleep(7);
             try
             {
@@ -97,20 +106,20 @@ namespace GoPiGo
         public void AnalogWrite(Pin pin, byte value)
         {
             var buffer = new[] { (byte)Commands.AnalogWrite, (byte)pin, value, Constants.Unused };
-            I2CController.Write(buffer);
+            WriteToI2C(buffer);
         }
 
         public void PinMode(Pin pin, PinMode mode)
         {
             var buffer = new[] { (byte)Commands.PinMode, (byte)pin, (byte)mode, Constants.Unused };
-            I2CController.Write(buffer);
+            WriteToI2C(buffer);
         }
 
 
         public decimal BatteryVoltage()
         {
             var buffer = new[] { (byte)Commands.BatteryVoltage, Constants.Unused, Constants.Unused, Constants.Unused };
-            I2CController.Write(buffer);
+            WriteToI2C(buffer);
             Thread.Sleep(1); //Wait a few ms to process
             try
             {
@@ -129,7 +138,7 @@ namespace GoPiGo
         public IGoPiGo RunCommand(Commands command, byte firstParam = Constants.Unused, byte secondParam = Constants.Unused, byte thirdParam = Constants.Unused)
         {
             var buffer = new[] { (byte)command, firstParam, secondParam, thirdParam };
-            I2CController.Write(buffer);
+            WriteToI2C(buffer);
             Thread.Sleep(5);
             return this;
         }
@@ -138,6 +147,7 @@ namespace GoPiGo
         {
             if (this.Driver != null)
             {
+                this.MotorController().Stop();
                 this.Driver.Dispose();
             }
         }
