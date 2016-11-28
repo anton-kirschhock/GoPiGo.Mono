@@ -40,7 +40,7 @@ namespace RunMotor
                     gopigo.MotorController().MoveForward();
                     Thread.Sleep(50);
                     var d = ultrasonic.MeasureInCentimeters();
-                    while (d > 15)
+                    while (d > 30)
                     {
                         Thread.Sleep(500);
                         d = ultrasonic.MeasureInCentimeters();
@@ -54,7 +54,7 @@ namespace RunMotor
                     {
                         led1.ChangeState(GoPiGo.Sensors.SensorStatus.On);
                         gopigo.MotorController().RotateLeft();
-                        Thread.Sleep(500);
+                        Thread.Sleep(250);
                         gopigo.MotorController().Stop();
                         led1.ChangeState(GoPiGo.Sensors.SensorStatus.Off);
                         Thread.Sleep(500);
